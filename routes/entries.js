@@ -16,3 +16,18 @@ router.put("/:id", async (req, res) => {
   ]);
   res.send(rows);
 });
+
+router.post("/", async (req, res) => {
+  const { list_id, text } = req.body;
+  try {
+    const {
+      rows,
+    } = await db.query(
+      "INSERT INTO entries (list_id, text, created_at) VALUES ($1, $2, NOW()) RETURNING id as entries_id, text, checked",
+      [list_id, text]
+    );
+    res.send(rows);
+  } catch (error) {
+    res.status(400).send(error.toString());
+  }
+});

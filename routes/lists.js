@@ -10,7 +10,7 @@ router.get("/:id", async (req, res) => {
   const {
     rows,
   } = await db.query(
-    "SELECT *, entries.id as entries_id FROM lists INNER JOIN entries ON entries.list_id = lists.id WHERE lists.id = $1",
+    "SELECT *, entries.id as entries_id FROM lists LEFT JOIN entries ON entries.list_id = lists.id WHERE lists.id = $1",
     [id]
   );
   res.send(rows);
@@ -21,7 +21,7 @@ router.get("/", async (_req, res) => {
   res.send(rows);
 });
 
-router.post("/", async (req, res, next) => {
+router.post("/", async (req, res) => {
   const { name } = req.body;
   try {
     const {
@@ -34,4 +34,10 @@ router.post("/", async (req, res, next) => {
   } catch (error) {
     res.status(400).send(error.toString());
   }
+});
+
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+  await db.query("DELETE FROM lists WHERE id = $1", [id]);
+  res.status(200).send("ok");
 });

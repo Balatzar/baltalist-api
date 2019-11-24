@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const mountRoutes = require("./routes");
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(
   corser.create({

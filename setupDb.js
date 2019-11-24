@@ -32,7 +32,7 @@ const pool = new Pool({ database: "baltalist" });
         list_id UUID NOT NULL,
         created_at TIMESTAMPTZ NOT NULL,
         updated_at TIMESTAMPTZ,
-        FOREIGN KEY (list_id) REFERENCES lists (id)
+        FOREIGN KEY (list_id) REFERENCES lists (id) ON DELETE CASCADE
       )
     `;
     // create our table
