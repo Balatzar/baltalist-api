@@ -1,5 +1,10 @@
 const { Pool } = require("pg");
-const pool = new Pool({ database: "baltalist" });
+const connectionString = process.env.DATABASE_URL;
+const pool = new Pool(
+  connectionString
+    ? { connectionString: connectionString }
+    : { database: "baltalist" }
+);
 (async () => {
   // note: we don't try/catch this because if connecting throws an exception
   // we don't need to dispose of the client (it will be undefined)
