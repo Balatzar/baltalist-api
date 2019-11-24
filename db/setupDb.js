@@ -22,7 +22,7 @@ const pool = new Pool(
           : "DROP TABLE IF EXISTS users CASCADE;"
       }
       CREATE TABLE ${
-        process.env.NODE_ENV === "production" ? "IF EXISTS " : ""
+        process.env.NODE_ENV === "production" ? "IF NOT EXISTS " : ""
       }users (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         created_at TIMESTAMPTZ NOT NULL,
@@ -34,7 +34,7 @@ const pool = new Pool(
           : "DROP TABLE IF EXISTS lists CASCADE;"
       }
       CREATE TABLE ${
-        process.env.NODE_ENV === "production" ? "IF EXISTS " : ""
+        process.env.NODE_ENV === "production" ? "IF NOT EXISTS " : ""
       }lists (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         name VARCHAR (50) NOT NULL CHECK (LENGTH(name) >= 1),
@@ -49,7 +49,7 @@ const pool = new Pool(
           : "DROP TABLE IF EXISTS entries CASCADE;"
       }
       CREATE TABLE ${
-        process.env.NODE_ENV === "production" ? "IF EXISTS " : ""
+        process.env.NODE_ENV === "production" ? "IF NOT EXISTS " : ""
       }entries (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         text VARCHAR (500),
