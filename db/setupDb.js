@@ -9,14 +9,26 @@ const pool = new Pool({ database: "baltalist" });
 
     const createTables = `
       CREATE EXTENSION IF NOT EXISTS "pgcrypto";
-      DROP TABLE IF EXISTS users CASCADE;
-      CREATE TABLE users (
+      ${
+        process.env.NODE_ENV === "production"
+          ? ""
+          : "DROP TABLE IF EXISTS users CASCADE;"
+      }
+      CREATE TABLE ${
+        process.env.NODE_ENV === "production" ? "IF EXISTS " : ""
+      }users (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         created_at TIMESTAMPTZ NOT NULL,
         updated_at TIMESTAMPTZ
       );
-      DROP TABLE IF EXISTS lists CASCADE;
-      CREATE TABLE lists (
+      ${
+        process.env.NODE_ENV === "production"
+          ? ""
+          : "DROP TABLE IF EXISTS lists CASCADE;"
+      }
+      CREATE TABLE ${
+        process.env.NODE_ENV === "production" ? "IF EXISTS " : ""
+      }lists (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         name VARCHAR (50) NOT NULL CHECK (LENGTH(name) >= 1),
         user_id UUID,
@@ -24,8 +36,14 @@ const pool = new Pool({ database: "baltalist" });
         updated_at TIMESTAMPTZ,
         FOREIGN KEY (user_id) REFERENCES users (id)
       );
-      DROP TABLE IF EXISTS entries CASCADE;
-      CREATE TABLE entries (
+      ${
+        process.env.NODE_ENV === "production"
+          ? ""
+          : "DROP TABLE IF EXISTS entries CASCADE;"
+      }
+      CREATE TABLE ${
+        process.env.NODE_ENV === "production" ? "IF EXISTS " : ""
+      }entries (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         text VARCHAR (500),
         checked BOOLEAN NOT NULL DEFAULT false,
